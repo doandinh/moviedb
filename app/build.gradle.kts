@@ -62,7 +62,7 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
             signingConfig = signingConfigs[BuildTypes.RELEASE]
             buildConfigField("String", "BASE_API_URL", "\"https://api.themoviedb.org/\"")
-            buildConfigField("String", "IMAGE_URL", "\"https://image.tmdb.org/t/p/w300\"")
+            buildConfigField("String", "IMAGE_URL", "\"https://image.tmdb.org/t/p/w\"")
         }
 
         debug {
@@ -70,7 +70,7 @@ android {
             isMinifyEnabled = false
             signingConfig = signingConfigs[BuildTypes.DEBUG]
             buildConfigField("String", "BASE_API_URL", "\"https://api.themoviedb.org/\"")
-            buildConfigField("String", "IMAGE_URL", "\"https://image.tmdb.org/t/p/w300\"")
+            buildConfigField("String", "IMAGE_URL", "\"https://image.tmdb.org/t/p/w\"")
         }
     }
 

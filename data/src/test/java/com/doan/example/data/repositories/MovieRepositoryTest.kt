@@ -3,7 +3,7 @@ package com.doan.example.data.repositories
 import com.doan.example.data.remote.models.responses.toMovies
 import com.doan.example.data.remote.services.ApiService
 import com.doan.example.data.test.MockUtil
-import com.doan.example.domain.repositories.Repository
+import com.doan.example.domain.repositories.MovieRepository
 import io.kotest.matchers.shouldBe
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -15,15 +15,15 @@ import org.junit.Before
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
-class RepositoryTest {
+class MovieRepositoryTest {
 
     private lateinit var mockService: ApiService
-    private lateinit var repository: Repository
+    private lateinit var movieRepository: MovieRepository
 
     @Before
     fun setUp() {
         mockService = mockk()
-        repository = RepositoryImpl(mockService)
+        movieRepository = MovieRepositoryImpl(mockService)
     }
 
     @Test
@@ -31,7 +31,7 @@ class RepositoryTest {
         val expected = MockUtil.movieResponse
         coEvery { mockService.getMovies() } returns expected
 
-        repository.getMovies().collect {
+        movieRepository.getMovies().collect {
             it shouldBe expected.toMovies()
         }
     }
@@ -41,7 +41,7 @@ class RepositoryTest {
         val expected = Throwable()
         coEvery { mockService.getMovies() } throws expected
 
-        repository.getMovies().catch {
+        movieRepository.getMovies().catch {
             it shouldBe expected
         }.collect()
     }

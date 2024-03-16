@@ -1,6 +1,6 @@
 package com.doan.example.domain.usecases
 
-import com.doan.example.domain.repositories.Repository
+import com.doan.example.domain.repositories.MovieRepository
 import com.doan.example.domain.test.MockUtil
 import io.kotest.matchers.shouldBe
 import io.mockk.every
@@ -14,19 +14,19 @@ import org.junit.Test
 @ExperimentalCoroutinesApi
 class UseCaseTest {
 
-    private lateinit var mockRepository: Repository
+    private lateinit var mockMovieRepository: MovieRepository
     private lateinit var getMoviesUseCase: GetMoviesUseCase
 
     @Before
     fun setUp() {
-        mockRepository = mockk()
-        getMoviesUseCase = GetMoviesUseCase(mockRepository)
+        mockMovieRepository = mockk()
+        getMoviesUseCase = GetMoviesUseCase(mockMovieRepository)
     }
 
     @Test
     fun `When request successful, it returns success`() = runTest {
         val expected = MockUtil.movies
-        every { mockRepository.getMovies() } returns flowOf(expected)
+        every { mockMovieRepository.getMovies() } returns flowOf(expected)
 
         getMoviesUseCase().collect {
             it shouldBe expected
@@ -36,7 +36,7 @@ class UseCaseTest {
     @Test
     fun `When request failed, it returns error`() = runTest {
         val expected = Exception()
-        every { mockRepository.getMovies() } returns flow { throw expected }
+        every { mockMovieRepository.getMovies() } returns flow { throw expected }
 
         getMoviesUseCase().catch {
             it shouldBe expected

@@ -11,7 +11,7 @@ import com.doan.example.model.MovieUiModel
 class MoviesAdapter(
     context: Context,
     movies: ArrayList<MovieUiModel> = arrayListOf(),
-    var onItemClicked: ((movieUiModel: MovieUiModel) -> Unit)? = null
+    var onItemClicked: ((movieId: Long) -> Unit)? = null
 ) :
     ArrayAdapter<MovieUiModel>(context, 0, movies) {
 
@@ -26,7 +26,7 @@ class MoviesAdapter(
                         transformations(RoundedCornersTransformation())
                     }
                     tvName.text = uiModel.title
-                    root.setOnClickListener { onItemClicked?.invoke(uiModel) }
+                    root.setOnClickListener { onItemClicked?.invoke(uiModel.id) }
                 }
             }.root
     }

@@ -29,7 +29,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     override fun setupView() {
         binding.gvHome.apply {
-            moviesAdapter.onItemClicked = { uiModel -> viewModel.navigateToSecond(uiModel) }
+            moviesAdapter.onItemClicked = { movieId -> viewModel.navigateToSecond(movieId) }
             adapter = moviesAdapter
         }
 

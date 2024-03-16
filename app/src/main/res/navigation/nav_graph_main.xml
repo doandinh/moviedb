@@ -23,10 +23,11 @@
     <fragment
         android:id="@+id/movieDetailFragment"
         android:name="com.doan.example.ui.screens.moviedetail.MovieDetailFragment"
+        android:label="Movie Detail"
         tools:layout="@layout/fragment_movie_detail">
 
         <argument
-            android:name="uiModel"
-            app:argType="com.doan.example.model.MovieUiModel" />
+            android:name="movieId"
+            app:argType="long" />
     </fragment>
 </navigation>

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Sample Xml</string>
+    <string name="app_name">MovieDB</string>
     <string name="error_generic">Unexpected error</string>
 
     <string name="home_title_bar">Home</string>
 
-    <string name="second_title_bar">Movie Detail</string>
-    <string name="second_id_title">ID: %s</string>
+    <string name="movie_detail_popularity">Popularity:</string>
+    <string name="movie_detail_status">Status:</string>
 </resources>

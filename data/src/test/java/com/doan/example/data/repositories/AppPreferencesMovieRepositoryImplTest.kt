@@ -25,7 +25,7 @@ private const val TEST_DATASTORE_NAME: String = "test_datastore"
 
 @ExperimentalCoroutinesApi
 @RunWith(RobolectricTestRunner::class)
-class AppPreferencesRepositoryImplTest {
+class AppPreferencesMovieRepositoryImplTest {
 
     private val testContext: Context = ApplicationProvider.getApplicationContext()
     private val testCoroutineDispatcher = UnconfinedTestDispatcher()

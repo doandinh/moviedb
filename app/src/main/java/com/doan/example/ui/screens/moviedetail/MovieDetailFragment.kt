@@ -1,12 +1,22 @@
 package com.doan.example.ui.screens.moviedetail
 
+import android.graphics.Color
+import android.graphics.Typeface
+import android.text.SpannableString
+import android.text.Spanned.SPAN_EXCLUSIVE_INCLUSIVE
+import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import coil.load
+import coil.transform.RoundedCornersTransformation
 import com.doan.example.R
 import com.doan.example.databinding.FragmentMovieDetailBinding
-import com.doan.example.extensions.provideNavArgs
-import com.doan.example.extensions.provideViewModels
+import com.doan.example.extensions.*
+import com.doan.example.lib.IsLoading
+import com.doan.example.model.MovieDetailUiModel
 import com.doan.example.ui.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -29,15 +39,68 @@ class MovieDetailFragment : BaseFragment<FragmentMovieDetailBinding>() {
         }
     }
 
+    private fun isLoading(isLoading: IsLoading) {
+        binding.pbMovieDetail.visibleOrGone(isLoading)
+    }
+
     override fun initViewModel() {
-        viewModel.initViewModel(args.uiModel)
+        viewModel.getMovieDetail(args.movieId)
     }
 
     override fun bindViewModel() {
-        viewModel.id bindTo ::displayId
+        viewModel.isLoading bindTo ::isLoading
+        viewModel.movieDetailUiModel bindTo ::displayMovieDetail
     }
 
-    private fun displayId(id: Long?) {
-        binding.tvSecondId.text = getString(R.string.second_id_title, id?.toString())
+    private fun displayMovieDetail(movieDetail: MovieDetailUiModel?) {
+        movieDetail?.run {
+            (requireActivity() as AppCompatActivity).supportActionBar?.apply {
+                title = movieDetail.title
+            }
+            with(binding) {
+                tvName.text = movieDetail.originalTitle
+                tvOverview.text = movieDetail.overview
+                Log.e("DOANDM", "movieDetail.posterPath: ${movieDetail.posterPath}")
+                ivPoster.load(movieDetail.posterPath) {
+                    crossfade(true)
+                    placeholder(android.R.drawable.ic_media_play)
+                    transformations(RoundedCornersTransformation())
+                }
+                val strPopularity = getString(R.string.movie_detail_popularity)
+                val fullStrPopularity =
+                    strPopularity + " " + String.format("%.2f", movieDetail.popularity)
+                val spPopularity = SpannableString(fullStrPopularity)
+                spPopularity.setSpan(
+                    ForegroundColorSpan(Color.GREEN),
+                    strPopularity.length, // start
+                    fullStrPopularity.length, // end
+                    SPAN_EXCLUSIVE_INCLUSIVE
+                )
+                spPopularity.setSpan(
+                    StyleSpan(Typeface.BOLD_ITALIC),
+                    strPopularity.length, // start
+                    fullStrPopularity.length, // end
+                    SPAN_EXCLUSIVE_INCLUSIVE
+                )
+                tvPopularity.text = spPopularity
+
+                val strStatus = getString(R.string.movie_detail_status)
+                val fullStrStatus = strStatus + " " + movieDetail.status
+                val spStatus = SpannableString(fullStrStatus)
+                spStatus.setSpan(
+                    ForegroundColorSpan(Color.RED),
+                    strStatus.length, // start
+                    fullStrStatus.length, // end
+                    SPAN_EXCLUSIVE_INCLUSIVE
+                )
+                spStatus.setSpan(
+                    StyleSpan(Typeface.BOLD),
+                    strStatus.length, // start
+                    fullStrStatus.length, // end
+                    SPAN_EXCLUSIVE_INCLUSIVE
+                )
+                tvStatus.text = spStatus
+            }
+        }
     }
 }
