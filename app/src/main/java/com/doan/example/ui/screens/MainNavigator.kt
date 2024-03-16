@@ -4,7 +4,7 @@ import androidx.fragment.app.Fragment
 import com.doan.example.R
 import com.doan.example.model.MovieUiModel
 import com.doan.example.ui.base.*
-import com.doan.example.ui.screens.home.HomeFragmentDirections.Companion.actionHomeFragmentToSecondFragment
+import com.doan.example.ui.screens.home.HomeFragmentDirections.Companion.actionHomeFragmentToMovieDetailFragment
 import javax.inject.Inject
 
 interface MainNavigator : BaseNavigator
@@ -24,7 +24,7 @@ class MainNavigatorImpl @Inject constructor(
     private fun navigateToSecond(movieUiModel: MovieUiModel) {
         val navController = findNavController()
         when (navController?.currentDestination?.id) {
-            R.id.homeFragment -> navController.navigate(actionHomeFragmentToSecondFragment(movieUiModel))
+            R.id.homeFragment -> navController.navigate(actionHomeFragmentToMovieDetailFragment(movieUiModel))
             else -> unsupportedNavigation()
         }
     }

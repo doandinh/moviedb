@@ -12,8 +12,8 @@
         tools:layout="@layout/fragment_home">
 
         <action
-            android:id="@+id/action_homeFragment_to_secondFragment"
-            app:destination="@id/secondFragment"
+            android:id="@+id/action_homeFragment_to_movieDetailFragment"
+            app:destination="@id/movieDetailFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
@@ -21,10 +21,9 @@
     </fragment>
 
     <fragment
-        android:id="@+id/secondFragment"
-        android:name="com.doan.example.ui.screens.second.SecondFragment"
-        android:label="@string/second_title_bar"
-        tools:layout="@layout/fragment_second">
+        android:id="@+id/movieDetailFragment"
+        android:name="com.doan.example.ui.screens.moviedetail.MovieDetailFragment"
+        tools:layout="@layout/fragment_movie_detail">
 
         <argument
             android:name="uiModel"

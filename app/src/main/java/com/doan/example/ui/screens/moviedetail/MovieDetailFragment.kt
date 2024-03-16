@@ -1,24 +1,24 @@
-package com.doan.example.ui.screens.second
+package com.doan.example.ui.screens.moviedetail
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import com.doan.example.R
-import com.doan.example.databinding.FragmentSecondBinding
+import com.doan.example.databinding.FragmentMovieDetailBinding
 import com.doan.example.extensions.provideNavArgs
 import com.doan.example.extensions.provideViewModels
 import com.doan.example.ui.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SecondFragment : BaseFragment<FragmentSecondBinding>() {
+class MovieDetailFragment : BaseFragment<FragmentMovieDetailBinding>() {
 
-    private val viewModel: SecondViewModel by provideViewModels()
-    private val args: SecondFragmentArgs by provideNavArgs()
+    private val viewModel: MovieDetailViewModel by provideViewModels()
+    private val args: MovieDetailFragmentArgs by provideNavArgs()
 
-    override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentSecondBinding
+    override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentMovieDetailBinding
         get() = { inflater, container, attachToParent ->
-            FragmentSecondBinding.inflate(inflater, container, attachToParent)
+            FragmentMovieDetailBinding.inflate(inflater, container, attachToParent)
         }
 
     override fun setupView() {

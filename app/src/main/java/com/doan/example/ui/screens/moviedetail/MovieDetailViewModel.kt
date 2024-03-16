@@ -1,4 +1,4 @@
-package com.doan.example.ui.screens.second
+package com.doan.example.ui.screens.moviedetail
 
 import com.doan.example.model.MovieUiModel
 import com.doan.example.ui.base.BaseViewModel
@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class SecondViewModel @Inject constructor() : BaseViewModel() {
+class MovieDetailViewModel @Inject constructor() : BaseViewModel() {
 
     private val _id = MutableStateFlow<Long?>(null)
     val id: StateFlow<Long?>
