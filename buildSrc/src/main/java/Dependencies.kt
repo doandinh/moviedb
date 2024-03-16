@@ -43,7 +43,7 @@ object Dependencies {
     }
 
     object Util {
-        const val COMMON_KTX = "com.github.nimblehq:android-common-ktx:${Versions.COMMON_KTX}"
+        const val COIL = "io.coil-kt:coil:${Versions.COIL}"
     }
 
     object Test {

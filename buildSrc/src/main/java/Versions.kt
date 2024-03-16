@@ -19,7 +19,7 @@ object Versions {
     const val ANDROIDX_TEST_CORE_VERSION = "1.4.0"
 
     const val CHUCKER = "3.5.2"
-    const val COMMON_KTX = "0.1.1"
+    const val COIL = "2.6.0"
     const val CORE = "1.4.0"
     const val CORE_KTX = "1.10.1"
 

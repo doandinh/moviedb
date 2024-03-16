@@ -1,16 +1,12 @@
 package com.doan.example.ui.base
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.annotation.CallSuper
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
+import androidx.lifecycle.*
 import androidx.viewbinding.ViewBinding
-import co.nimblehq.common.extensions.hideSoftKeyboard
+import com.doan.example.extensions.hideSoftKeyboard
 import com.doan.example.ui.common.Toaster
 import com.doan.example.ui.userReadableMessage
 import kotlinx.coroutines.flow.Flow

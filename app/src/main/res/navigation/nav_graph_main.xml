@@ -28,6 +28,6 @@
 
         <argument
             android:name="uiModel"
-            app:argType="com.doan.example.model.UiModel" />
+            app:argType="com.doan.example.model.MovieUiModel" />
     </fragment>
 </navigation>

@@ -37,7 +37,7 @@ class SecondFragment : BaseFragment<FragmentSecondBinding>() {
         viewModel.id bindTo ::displayId
     }
 
-    private fun displayId(id: String?) {
-        binding.tvSecondId.text = getString(R.string.second_id_title, id)
+    private fun displayId(id: Long?) {
+        binding.tvSecondId.text = getString(R.string.second_id_title, id?.toString())
     }
 }

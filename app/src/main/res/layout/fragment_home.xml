@@ -14,7 +14,7 @@
         android:verticalSpacing="@dimen/spacing_normal"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:itemCount="10"
-        tools:listitem="@layout/item_home_list" />
+        tools:listitem="@layout/movie_item" />
 
     <ProgressBar
         android:id="@+id/pbHome"

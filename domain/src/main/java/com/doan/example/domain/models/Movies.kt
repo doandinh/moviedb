@@ -7,9 +7,9 @@ data class Movies(
     val totalResults: Int,
 ) {
     data class Movie(
+        val id: Long,
         val adult: Boolean,
         val backdropPath: String,
-        val id: Long,
         val originalLanguage: String,
         val originalTitle: String,
         val overview: String,
