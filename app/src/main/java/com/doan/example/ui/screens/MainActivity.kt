@@ -13,6 +13,7 @@ import com.doan.example.databinding.ActivityMainBinding
 import com.doan.example.enums.MessageActions
 import com.doan.example.lib.AppEvent
 import com.doan.example.lib.AppEventBus
+import com.doan.example.model.MovieDetailUiModel
 import com.doan.example.model.MovieUiModel
 import com.doan.example.services.NetworkingService
 import com.doan.example.ui.base.BaseActivity
@@ -27,11 +28,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     private var mService: Messenger? = null
     private var mBound: Boolean = false
     private var getMoviesJob: Job? = null
+    private var getMovieDetailJob: Job? = null
 
     /**
      * Target we publish for clients to send messages to IncomingHandler.
      */
-    val mMessenger by lazy { Messenger(IncomingHandler(lifecycleScope)) }
+    private val mMessenger by lazy { Messenger(IncomingHandler(lifecycleScope)) }
 
     /** Defines callbacks for service binding, passed to bindService().  */
     private val connection = object : ServiceConnection {
@@ -41,6 +43,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
             // We've bound to LocalService, cast the IBinder and get LocalService instance.
             mBound = true
+            getMovies()
         }
 
         override fun onServiceDisconnected(arg0: ComponentName) {
@@ -61,28 +64,25 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             supportFragmentManager.findFragmentById(R.id.fcvMainNavHostFragment) as NavHostFragment
         val navController = navHostFragment.navController
         NavigationUI.setupActionBarWithNavController(this, navController)
-    }
 
-    override fun onStart() {
-        super.onStart()
-        // Bind to LocalService.
+        // Bind to NetworkingService.
         Intent(this, NetworkingService::class.java).also { intent ->
             bindService(intent, connection, Context.BIND_AUTO_CREATE)
         }
     }
 
-    override fun onStop() {
-        super.onStop()
+    override fun onDestroy() {
         unbindService(connection)
         mBound = false
         getMoviesJob?.cancel()
+        getMoviesJob = null
+        getMovieDetailJob?.cancel()
+        getMovieDetailJob = null
+        super.onDestroy()
     }
 
-    fun getMovies() {
+    private fun getMovies() {
         getMoviesJob = CoroutineScope(Dispatchers.IO).launch {
-            while (!mBound && !isDestroyed) {
-                delay(500)
-            }
             if (mBound && !isDestroyed) {
                 val msg = Message.obtain(null, MessageActions.ACTION_GET_MOVIES.ordinal, 0, 0)
                 try {
@@ -92,6 +92,28 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                     e.printStackTrace()
                 }
             }
+            getMoviesJob = null
+        }
+    }
+
+    fun getMovieDetail(movieId: Long) {
+        getMovieDetailJob = CoroutineScope(Dispatchers.IO).launch {
+            if (mBound && !isDestroyed) {
+                val msg = Message.obtain(
+                    null,
+                    MessageActions.ACTION_GET_MOVIE_DETAIL.ordinal,
+                    0,
+                    0,
+                    movieId
+                )
+                try {
+                    msg.replyTo = mMessenger
+                    mService?.send(msg)
+                } catch (e: RemoteException) {
+                    e.printStackTrace()
+                }
+            }
+            getMovieDetailJob = null
         }
     }
 
@@ -109,6 +131,18 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                         lifecycleScope.launch {
                             if (it is List<*>) {
                                 AppEventBus.publish(AppEvent.MovieList(it as List<MovieUiModel>))
+                            } else if (it is Throwable) {
+                                AppEventBus.publish(AppEvent.Error(it))
+                            }
+                        }
+                    }
+                }
+
+                MessageActions.ACTION_GET_MOVIE_DETAIL.ordinal -> {
+                    msg.obj?.let {
+                        lifecycleScope.launch {
+                            if (it is MovieDetailUiModel) {
+                                AppEventBus.publish(AppEvent.MovieDetail(it))
                             } else if (it is Throwable) {
                                 AppEventBus.publish(AppEvent.Error(it))
                             }

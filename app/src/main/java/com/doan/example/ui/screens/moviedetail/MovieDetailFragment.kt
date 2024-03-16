@@ -9,15 +9,18 @@ import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import coil.load
 import coil.transform.RoundedCornersTransformation
 import com.doan.example.R
 import com.doan.example.databinding.FragmentMovieDetailBinding
 import com.doan.example.extensions.*
-import com.doan.example.lib.IsLoading
+import com.doan.example.lib.*
 import com.doan.example.model.MovieDetailUiModel
 import com.doan.example.ui.base.BaseFragment
+import com.doan.example.ui.screens.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MovieDetailFragment : BaseFragment<FragmentMovieDetailBinding>() {
@@ -31,6 +34,7 @@ class MovieDetailFragment : BaseFragment<FragmentMovieDetailBinding>() {
         }
 
     override fun setupView() {
+        subScribeEventBus()
         // Hide navigation button on toolbar
         (requireActivity() as AppCompatActivity).supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(false)
@@ -43,12 +47,32 @@ class MovieDetailFragment : BaseFragment<FragmentMovieDetailBinding>() {
     }
 
     override fun initViewModel() {
-        viewModel.getMovieDetail(args.movieId)
+//        viewModel.getMovieDetail(args.movieId)
+        isLoading(true)
+        (activity as? MainActivity)?.getMovieDetail(args.movieId)
     }
 
     override fun bindViewModel() {
         viewModel.isLoading bindTo ::isLoading
         viewModel.movieDetailUiModel bindTo ::displayMovieDetail
+    }
+
+    private fun subScribeEventBus() {
+        lifecycleScope.launch {
+            AppEventBus.subscribe<AppEvent> { appEvent ->
+                isLoading(false)
+                when (appEvent) {
+                    is AppEvent.MovieDetail -> {
+                        displayMovieDetail(appEvent.movie)
+                    }
+                    is AppEvent.Error -> {
+                        displayError(appEvent.error)
+                    }
+
+                    else -> {}
+                }
+            }
+        }
     }
 
     private fun displayMovieDetail(movieDetail: MovieDetailUiModel?) {

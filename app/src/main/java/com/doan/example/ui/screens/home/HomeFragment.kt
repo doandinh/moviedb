@@ -9,7 +9,6 @@ import com.doan.example.extensions.visibleOrGone
 import com.doan.example.lib.*
 import com.doan.example.model.MovieUiModel
 import com.doan.example.ui.base.BaseFragment
-import com.doan.example.ui.screens.MainActivity
 import com.doan.example.ui.screens.MainNavigator
 import com.doan.example.ui.screens.home.adapter.MoviesAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -37,15 +36,20 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             adapter = moviesAdapter
         }
 //        viewModel.getMovies()
-        (activity as? MainActivity)?.getMovies()
+        isLoading(true)
+//        (activity as? MainActivity)?.getMovies()
     }
 
     private fun subScribeEventBus() {
         lifecycleScope.launch {
             AppEventBus.subscribe<AppEvent> { appEvent ->
+                isLoading(false)
                 when (appEvent) {
                     is AppEvent.MovieList -> {
                         displayMoviesUi(appEvent.movies)
+                    }
+                    is AppEvent.Error -> {
+                        displayError(appEvent.error)
                     }
 
                     else -> {}

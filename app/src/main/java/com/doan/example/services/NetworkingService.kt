@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.*
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.lifecycleScope
+import com.doan.example.domain.usecases.GetMovieDetailUseCase
 import com.doan.example.domain.usecases.GetMoviesUseCase
 import com.doan.example.enums.MessageActions
 import com.doan.example.model.toUiModel
@@ -20,6 +21,9 @@ class NetworkingService : LifecycleService() {
 
     @Inject
     lateinit var getMoviesUseCase: GetMoviesUseCase
+
+    @Inject
+    lateinit var getMovieDetailUseCase: GetMovieDetailUseCase
 
     override fun onBind(intent: Intent): IBinder {
         super.onBind(intent)
@@ -42,6 +46,8 @@ class NetworkingService : LifecycleService() {
             when (msg.what) {
                 MessageActions.ACTION_GET_MOVIES.ordinal ->
                     service.getMovies(msg.replyTo)
+                MessageActions.ACTION_GET_MOVIE_DETAIL.ordinal ->
+                    service.getMovieDetail((msg.obj as? Long) ?: 0, msg.replyTo)
 
                 else -> super.handleMessage(msg)
             }
@@ -66,6 +72,30 @@ class NetworkingService : LifecycleService() {
                     Message.obtain(
                         null,
                         MessageActions.ACTION_GET_MOVIES.ordinal,
+                        e
+                    )
+                )
+            }
+            .launchIn(lifecycleScope)
+    }
+
+    fun getMovieDetail(movieId: Long, replyTo: Messenger) {
+        getMovieDetailUseCase(movieId)
+            .onEach { result ->
+                replyTo.send(
+                    Message.obtain(
+                        null,
+                        MessageActions.ACTION_GET_MOVIE_DETAIL.ordinal,
+                        result.toUiModel()
+                    )
+                )
+            }
+            .flowOn(dispatchersProvider.io)
+            .catch { e ->
+                replyTo.send(
+                    Message.obtain(
+                        null,
+                        MessageActions.ACTION_GET_MOVIE_DETAIL.ordinal,
                         e
                     )
                 )
