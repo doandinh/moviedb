@@ -1,32 +1,75 @@
 package com.doan.example.services
 
-import android.app.Service
 import android.content.Intent
-import android.os.Binder
-import android.os.IBinder
-import java.util.Random
+import android.os.*
+import androidx.lifecycle.LifecycleService
+import androidx.lifecycle.lifecycleScope
+import com.doan.example.domain.usecases.GetMoviesUseCase
+import com.doan.example.enums.MessageActions
+import com.doan.example.model.toUiModel
+import com.doan.example.util.DispatchersProvider
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.*
+import javax.inject.Inject
 
-class NetworkingService: Service() {
-    // Binder given to clients.
-    private val binder = LocalBinder()
+@AndroidEntryPoint
+class NetworkingService : LifecycleService() {
 
-    // Random number generator.
-    private val mGenerator = Random()
+    @Inject
+    lateinit var dispatchersProvider: DispatchersProvider
 
-    /** Method for clients.  */
-    val randomNumber: Int
-        get() = mGenerator.nextInt(100)
-
-    /**
-     * Class used for the client Binder. Because we know this service always
-     * runs in the same process as its clients, we don't need to deal with IPC.
-     */
-    inner class LocalBinder : Binder() {
-        // Return this instance of LocalService so clients can call public methods.
-        fun getService(): NetworkingService = this@NetworkingService
-    }
+    @Inject
+    lateinit var getMoviesUseCase: GetMoviesUseCase
 
     override fun onBind(intent: Intent): IBinder {
-        return binder
+        super.onBind(intent)
+        mMessenger = Messenger(IncomingHandler(this))
+        return mMessenger.binder
+    }
+
+    /**
+     * Target we publish for clients to send messages to IncomingHandler.
+     */
+    private lateinit var mMessenger: Messenger
+
+    /**
+     * Handler of incoming messages from clients.
+     */
+    internal class IncomingHandler(
+        private val service: NetworkingService
+    ) : Handler(Looper.getMainLooper()) {
+        override fun handleMessage(msg: Message) {
+            when (msg.what) {
+                MessageActions.ACTION_GET_MOVIES.ordinal ->
+                    service.getMovies(msg.replyTo)
+
+                else -> super.handleMessage(msg)
+            }
+        }
+    }
+
+    fun getMovies(replyTo: Messenger) {
+        getMoviesUseCase()
+            .onEach { result ->
+                val uiModels = result.results.map { it.toUiModel() }
+                replyTo.send(
+                    Message.obtain(
+                        null,
+                        MessageActions.ACTION_GET_MOVIES.ordinal,
+                        uiModels
+                    )
+                )
+            }
+            .flowOn(dispatchersProvider.io)
+            .catch { e ->
+                replyTo.send(
+                    Message.obtain(
+                        null,
+                        MessageActions.ACTION_GET_MOVIES.ordinal,
+                        e
+                    )
+                )
+            }
+            .launchIn(lifecycleScope)
     }
 }

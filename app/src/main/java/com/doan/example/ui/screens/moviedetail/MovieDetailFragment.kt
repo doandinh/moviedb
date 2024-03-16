@@ -6,7 +6,6 @@ import android.text.SpannableString
 import android.text.Spanned.SPAN_EXCLUSIVE_INCLUSIVE
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
@@ -60,7 +59,6 @@ class MovieDetailFragment : BaseFragment<FragmentMovieDetailBinding>() {
             with(binding) {
                 tvName.text = movieDetail.originalTitle
                 tvOverview.text = movieDetail.overview
-                Log.e("DOANDM", "movieDetail.posterPath: ${movieDetail.posterPath}")
                 ivPoster.load(movieDetail.posterPath) {
                     crossfade(true)
                     placeholder(android.R.drawable.ic_media_play)

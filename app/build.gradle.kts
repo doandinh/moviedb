@@ -180,6 +180,7 @@ dependencies {
  * Kover configs
  */
 dependencies {
+    implementation("androidx.lifecycle:lifecycle-service:2.7.0")
     kover(project(Modules.DATA))
     kover(project(Modules.DOMAIN))
 }

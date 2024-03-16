@@ -2,15 +2,18 @@ package com.doan.example.ui.screens.home
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
 import com.doan.example.databinding.FragmentHomeBinding
 import com.doan.example.extensions.provideViewModels
 import com.doan.example.extensions.visibleOrGone
-import com.doan.example.lib.IsLoading
+import com.doan.example.lib.*
 import com.doan.example.model.MovieUiModel
 import com.doan.example.ui.base.BaseFragment
+import com.doan.example.ui.screens.MainActivity
 import com.doan.example.ui.screens.MainNavigator
 import com.doan.example.ui.screens.home.adapter.MoviesAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -28,16 +31,31 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         }
 
     override fun setupView() {
+        subScribeEventBus()
         binding.gvHome.apply {
             moviesAdapter.onItemClicked = { movieId -> viewModel.navigateToSecond(movieId) }
             adapter = moviesAdapter
         }
+//        viewModel.getMovies()
+        (activity as? MainActivity)?.getMovies()
+    }
 
-        viewModel.getMovies()
+    private fun subScribeEventBus() {
+        lifecycleScope.launch {
+            AppEventBus.subscribe<AppEvent> { appEvent ->
+                when (appEvent) {
+                    is AppEvent.MovieList -> {
+                        displayMoviesUi(appEvent.movies)
+                    }
+
+                    else -> {}
+                }
+            }
+        }
     }
 
     override fun bindViewModel() {
-        viewModel.movieUiModels bindTo ::displayUiModels
+        viewModel.movieUiModels bindTo ::displayMoviesUi
         viewModel.error bindTo ::displayError
         viewModel.navigator bindTo navigator::navigate
         viewModel.isLoading bindTo ::isLoading
@@ -48,7 +66,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         binding.pbHome.visibleOrGone(isLoading)
     }
 
-    private fun displayUiModels(movieUiModels: List<MovieUiModel>) {
+    private fun displayMoviesUi(movieUiModels: List<MovieUiModel>) {
         moviesAdapter.addAll(movieUiModels)
     }
 }
