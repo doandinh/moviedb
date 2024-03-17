@@ -31,7 +31,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     override fun setupView() {
         subScribeEventBus()
-        binding.gvHome.apply {
+        binding?.gvHome?.apply {
             moviesAdapter.onItemClicked = { movieId -> viewModel.navigateToSecond(movieId) }
             adapter = moviesAdapter
         }
@@ -67,7 +67,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
 
     private fun isLoading(isLoading: IsLoading) {
-        binding.pbHome.visibleOrGone(isLoading)
+        binding?.run {
+            pbHome.visibleOrGone(isLoading)
+        }
     }
 
     private fun displayMoviesUi(movieUiModels: List<MovieUiModel>) {

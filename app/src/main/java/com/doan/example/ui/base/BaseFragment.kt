@@ -23,8 +23,8 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment(), BaseFragmentCallback
     private var _binding: ViewBinding? = null
 
     @Suppress("UNCHECKED_CAST")
-    val binding: VB
-        get() = _binding as VB
+    val binding: VB?
+        get() = _binding as? VB
 
     @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,7 +41,7 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment(), BaseFragmentCallback
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return bindingInflater.invoke(inflater, container, false).apply {
+        return _binding?.root ?: return bindingInflater.invoke(inflater, container, false).apply {
             _binding = this
         }.root
     }
@@ -57,8 +57,8 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment(), BaseFragmentCallback
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
         _binding = null
+        super.onDestroyView()
     }
 
     @CallSuper

@@ -40,16 +40,18 @@ class MovieDetailFragment : BaseFragment<FragmentMovieDetailBinding>() {
             setDisplayHomeAsUpEnabled(false)
             setHomeButtonEnabled(false)
         }
+        isLoading(true)
+        (activity as? MainActivity)?.getMovieDetail(args.movieId)
     }
 
     private fun isLoading(isLoading: IsLoading) {
-        binding.pbMovieDetail.visibleOrGone(isLoading)
+        binding?.run {
+            pbMovieDetail.visibleOrGone(isLoading)
+        }
     }
 
     override fun initViewModel() {
 //        viewModel.getMovieDetail(args.movieId)
-        isLoading(true)
-        (activity as? MainActivity)?.getMovieDetail(args.movieId)
     }
 
     override fun bindViewModel() {
@@ -65,6 +67,7 @@ class MovieDetailFragment : BaseFragment<FragmentMovieDetailBinding>() {
                     is AppEvent.MovieDetail -> {
                         displayMovieDetail(appEvent.movie)
                     }
+
                     is AppEvent.Error -> {
                         displayError(appEvent.error)
                     }
@@ -80,7 +83,7 @@ class MovieDetailFragment : BaseFragment<FragmentMovieDetailBinding>() {
             (requireActivity() as AppCompatActivity).supportActionBar?.apply {
                 title = movieDetail.title
             }
-            with(binding) {
+            binding?.run {
                 tvName.text = movieDetail.originalTitle
                 tvOverview.text = movieDetail.overview
                 ivPoster.load(movieDetail.posterPath) {
