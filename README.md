@@ -1,6 +1,6 @@
-# Android Templates
+# Movie DB
 
-- Our optimized Android templates used in our android projects
+- A simple project to load the first page of discovering film
 
 ## Setup
 
