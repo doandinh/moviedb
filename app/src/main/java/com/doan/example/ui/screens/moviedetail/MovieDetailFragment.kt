@@ -35,7 +35,6 @@ class MovieDetailFragment : BaseFragment<FragmentMovieDetailBinding>() {
 
     override fun setupView() {
         subScribeEventBus()
-        isLoading(true)
         (activity as? MainActivity)?.getMovieDetail(args.movieId)
     }
 
@@ -50,20 +49,21 @@ class MovieDetailFragment : BaseFragment<FragmentMovieDetailBinding>() {
     }
 
     override fun bindViewModel() {
-//        viewModel.isLoading bindTo ::isLoading
+        viewModel.isLoading bindTo ::isLoading
         viewModel.movieDetailUiModel bindTo ::displayMovieDetail
     }
 
     private fun subScribeEventBus() {
         lifecycleScope.launch {
             AppEventBus.subscribe<AppEvent> { appEvent ->
-                isLoading(false)
                 when (appEvent) {
                     is AppEvent.MovieDetail -> {
+                        viewModel.hideLoadingDialog()
                         displayMovieDetail(appEvent.movie)
                     }
 
                     is AppEvent.Error -> {
+                        viewModel.hideLoadingDialog()
                         displayError(appEvent.error)
                     }
 

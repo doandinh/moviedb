@@ -36,18 +36,18 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             adapter = moviesAdapter
         }
 //        viewModel.getMovies()
-        isLoading(true)
     }
 
     private fun subScribeEventBus() {
         lifecycleScope.launch {
             AppEventBus.subscribe<AppEvent> { appEvent ->
-                isLoading(false)
                 when (appEvent) {
                     is AppEvent.MovieList -> {
+                        viewModel.hideLoadingDialog()
                         displayMoviesUi(appEvent.movies)
                     }
                     is AppEvent.Error -> {
+                        viewModel.hideLoadingDialog()
                         displayError(appEvent.error)
                     }
 
@@ -61,7 +61,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         viewModel.movieUiModels bindTo ::displayMoviesUi
         viewModel.error bindTo ::displayError
         viewModel.navigator bindTo navigator::navigate
-//        viewModel.isLoading bindTo ::isLoading
+        viewModel.isLoading bindTo ::isLoading
     }
 
 

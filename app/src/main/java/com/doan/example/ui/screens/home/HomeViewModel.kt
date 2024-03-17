@@ -17,6 +17,10 @@ class HomeViewModel @Inject constructor(
     private val getMoviesUseCase: GetMoviesUseCase,
 ) : BaseViewModel() {
 
+    init {
+        showLoading()
+    }
+
     private val _movieUiModels = MutableStateFlow<List<MovieUiModel>>(emptyList())
     val movieUiModels = _movieUiModels.asStateFlow()
 
@@ -34,5 +38,9 @@ class HomeViewModel @Inject constructor(
             .flowOn(dispatchersProvider.io)
             .catch { e -> _error.emit(e) }
             .launchIn(viewModelScope)
+    }
+
+    fun hideLoadingDialog() {
+        super.hideLoading()
     }
 }

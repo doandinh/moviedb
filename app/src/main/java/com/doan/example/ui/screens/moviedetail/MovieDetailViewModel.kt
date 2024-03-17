@@ -16,6 +16,10 @@ class MovieDetailViewModel @Inject constructor(
     private val getMovieDetailUseCase: GetMovieDetailUseCase,
 ) : BaseViewModel() {
 
+    init {
+        showLoading()
+    }
+
     private val _movieDetailUiModel = MutableStateFlow<MovieDetailUiModel?>(null)
     val movieDetailUiModel = _movieDetailUiModel.asStateFlow()
 
@@ -28,5 +32,9 @@ class MovieDetailViewModel @Inject constructor(
             .flowOn(dispatchersProvider.io)
             .catch { e -> _error.emit(e) }
             .launchIn(viewModelScope)
+    }
+
+    fun hideLoadingDialog() {
+        super.hideLoading()
     }
 }
