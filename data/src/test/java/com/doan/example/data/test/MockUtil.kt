@@ -1,11 +1,13 @@
 package com.doan.example.data.test
 
+import com.doan.example.data.extensions.parseJsonAsSingle
 import com.doan.example.data.remote.models.responses.*
 import io.mockk.every
 import io.mockk.mockk
 import okhttp3.ResponseBody
 import retrofit2.HttpException
 import retrofit2.Response
+import java.io.IOException
 
 object MockUtil {
 
@@ -37,4 +39,22 @@ object MockUtil {
     val movieDetailResponse = MovieDetailResponse(
         id = 123
     )
+
+    @Throws(Exception::class)
+    inline fun <reified T> getModel(clazz: Class<T>, fileName: String): T {
+        val json = readJsonFile(fileName)
+        return requireNotNull(parseJsonAsSingle(json))
+    }
+
+    @Throws(IOException::class)
+    fun Any.readJsonFile(filename: String): String {
+        val inputStream = requireNotNull(javaClass.getResourceAsStream(filename))
+        val stringBuilder = StringBuilder()
+        var index: Int
+        val bytes = ByteArray(4096)
+        while (inputStream.read(bytes).also { index = it } != -1) {
+            stringBuilder.append(String(bytes, 0, index))
+        }
+        return stringBuilder.toString()
+    }
 }

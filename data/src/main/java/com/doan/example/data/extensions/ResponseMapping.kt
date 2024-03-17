@@ -38,6 +38,12 @@ private fun Throwable.mapError(): Throwable {
     }
 }
 
+inline fun <reified T> parseJsonAsSingle(json: String): T? {
+    val moshi = MoshiBuilderProvider.moshi
+    val jsonAdapter = moshi.adapter(T::class.java)
+    return jsonAdapter.fromJson(json)
+}
+
 private fun parseErrorResponse(response: Response<*>?): ErrorResponse? {
     val jsonString = response?.errorBody()?.string()
     return try {

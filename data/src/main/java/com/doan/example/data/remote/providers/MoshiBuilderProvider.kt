@@ -3,9 +3,12 @@ package com.doan.example.data.remote.providers
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import java.util.Date
+import java.util.*
 
 object MoshiBuilderProvider {
+
+    val moshi: Moshi
+        get() = moshiBuilder.build()
 
     val moshiBuilder: Moshi.Builder
         get() = Moshi.Builder()

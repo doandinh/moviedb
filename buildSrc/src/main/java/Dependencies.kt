@@ -10,6 +10,7 @@ object Dependencies {
         const val ANDROIDX_FRAGMENT_KTX = "androidx.fragment:fragment-ktx:${Versions.ANDROIDX_FRAGMENT_KTX_VERSION}"
         const val ANDROIDX_NAVIGATION = "androidx.navigation:navigation-fragment-ktx:${Versions.ANDROIDX_NAVIGATION_VERSION}"
         const val ANDROIDX_NAVIGATION_UI = "androidx.navigation:navigation-ui-ktx:${Versions.ANDROIDX_NAVIGATION_VERSION}"
+        const val ANDROIDX_LIFECYCLE_SERVICE = "androidx.lifecycle:lifecycle-service:${Versions.ANDROIDX_LIFECYCLE_VERSION}"
     }
 
     object Hilt {

@@ -9,14 +9,10 @@ object Versions {
     const val ACCOMPANIST = "0.30.1"
 
     const val ANDROIDX_ACTIVITY_KTX_VERSION = "1.6.0"
-    const val ANDROIDX_CORE_KTX_VERSION = "1.9.0"
-    const val ANDROIDX_DATASTORE_PREFERENCES_VERSION = "1.0.0"
-    const val ANDROIDX_FRAGMENT_VERSION = "1.4.0"
     const val ANDROIDX_FRAGMENT_KTX_VERSION = "1.5.3"
-    const val ANDROIDX_LIFECYCLE_VERSION = "2.5.1"
+    const val ANDROIDX_LIFECYCLE_VERSION = "2.7.0"
     const val ANDROIDX_NAVIGATION_VERSION = "2.7.7"
     const val ANDROIDX_SUPPORT_VERSION = "1.5.1"
-    const val ANDROIDX_TEST_CORE_VERSION = "1.4.0"
 
     const val CHUCKER = "3.5.2"
     const val COIL = "2.6.0"

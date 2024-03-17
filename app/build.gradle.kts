@@ -136,6 +136,7 @@ dependencies {
     with(Dependencies.AndroidX) {
         implementation(CORE_KTX)
         implementation(LIFECYCLE_RUNTIME_KTX)
+        implementation(ANDROIDX_NAVIGATION_UI)
         implementation(DATASTORE_PREFERENCES)
 
         implementation(SECURITY_CRYPTO)
@@ -144,7 +145,7 @@ dependencies {
         implementation(CONSTRAINT_LAYOUT)
         implementation(ANDROIDX_FRAGMENT_KTX)
         implementation(ANDROIDX_NAVIGATION)
-        implementation(ANDROIDX_NAVIGATION_UI)
+        implementation(ANDROIDX_LIFECYCLE_SERVICE)
     }
 
     with(Dependencies.Hilt) {
@@ -180,7 +181,6 @@ dependencies {
  * Kover configs
  */
 dependencies {
-    implementation("androidx.lifecycle:lifecycle-service:2.7.0")
     kover(project(Modules.DATA))
     kover(project(Modules.DOMAIN))
 }

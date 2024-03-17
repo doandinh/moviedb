@@ -21,5 +21,6 @@
 #-renamesourcefileattribute SourceFile
 
 # Data class
--keepclassmembers class co.nimblehq.template.compose.data.requests.** { *; }
--keepclassmembers class co.nimblehq.template.compose.data.responses.** { *; }
+-keepclassmembers class com.doan.example.data.requests.** { *; }
+-keepclassmembers class com.doan.example.data.responses.** { *; }
+
