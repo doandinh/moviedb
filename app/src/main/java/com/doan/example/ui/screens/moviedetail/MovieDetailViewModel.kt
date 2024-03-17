@@ -34,7 +34,7 @@ class MovieDetailViewModel @Inject constructor(
             .launchIn(viewModelScope)
     }
 
-    fun hideLoadingDialog() {
+    fun hideLoadingIndicator() {
         super.hideLoading()
     }
 }

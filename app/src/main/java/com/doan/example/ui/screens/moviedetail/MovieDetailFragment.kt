@@ -58,12 +58,12 @@ class MovieDetailFragment : BaseFragment<FragmentMovieDetailBinding>() {
             AppEventBus.subscribe<AppEvent> { appEvent ->
                 when (appEvent) {
                     is AppEvent.MovieDetail -> {
-                        viewModel.hideLoadingDialog()
+                        viewModel.hideLoadingIndicator()
                         displayMovieDetail(appEvent.movie)
                     }
 
                     is AppEvent.Error -> {
-                        viewModel.hideLoadingDialog()
+                        viewModel.hideLoadingIndicator()
                         displayError(appEvent.error)
                     }
 

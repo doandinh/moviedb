@@ -43,11 +43,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             AppEventBus.subscribe<AppEvent> { appEvent ->
                 when (appEvent) {
                     is AppEvent.MovieList -> {
-                        viewModel.hideLoadingDialog()
+                        viewModel.hideLoadingIndicator()
                         displayMoviesUi(appEvent.movies)
                     }
                     is AppEvent.Error -> {
-                        viewModel.hideLoadingDialog()
+                        viewModel.hideLoadingIndicator()
                         displayError(appEvent.error)
                     }
 

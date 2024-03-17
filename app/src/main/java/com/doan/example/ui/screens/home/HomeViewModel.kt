@@ -40,7 +40,7 @@ class HomeViewModel @Inject constructor(
             .launchIn(viewModelScope)
     }
 
-    fun hideLoadingDialog() {
+    fun hideLoadingIndicator() {
         super.hideLoading()
     }
 }
