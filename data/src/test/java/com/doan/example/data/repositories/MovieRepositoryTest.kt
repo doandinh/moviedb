@@ -1,5 +1,6 @@
 package com.doan.example.data.repositories
 
+import com.doan.example.data.remote.models.responses.toMovieDetail
 import com.doan.example.data.remote.models.responses.toMovies
 import com.doan.example.data.remote.services.ApiService
 import com.doan.example.data.test.MockUtil
@@ -27,7 +28,7 @@ class MovieRepositoryTest {
     }
 
     @Test
-    fun `When request successful, it returns success`() = runTest {
+    fun `When calling getMovies successful, it returns corresponding data`() = runTest {
         val expected = MockUtil.movieResponse
         coEvery { mockService.getMovies() } returns expected
 
@@ -37,11 +38,31 @@ class MovieRepositoryTest {
     }
 
     @Test
-    fun `When request failed, it returns error`() = runTest {
+    fun `When calling getMovies failed, it returns error`() = runTest {
         val expected = Throwable()
         coEvery { mockService.getMovies() } throws expected
 
         movieRepository.getMovies().catch {
+            it shouldBe expected
+        }.collect()
+    }
+
+    @Test
+    fun `When calling getMovieDetail successful, it returns corresponding data`() = runTest {
+        val expected = MockUtil.movieDetailResponse
+        coEvery { mockService.getMovieDetail(any()) } returns expected
+
+        movieRepository.getMovieDetail(1).collect {
+            it shouldBe expected.toMovieDetail()
+        }
+    }
+
+    @Test
+    fun `When calling getMovieDetail failed, it returns error`() = runTest {
+        val expected = Throwable()
+        coEvery { mockService.getMovieDetail(any()) } throws expected
+
+        movieRepository.getMovieDetail(1).catch {
             it shouldBe expected
         }.collect()
     }

@@ -12,23 +12,23 @@ import org.junit.Before
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
-class UseCaseTest {
+class GetMovieDetailUseCaseTest {
 
     private lateinit var mockMovieRepository: MovieRepository
-    private lateinit var getMoviesUseCase: GetMoviesUseCase
+    private lateinit var getMovieDetailUseCase: GetMovieDetailUseCase
 
     @Before
     fun setUp() {
         mockMovieRepository = mockk()
-        getMoviesUseCase = GetMoviesUseCase(mockMovieRepository)
+        getMovieDetailUseCase = GetMovieDetailUseCase(mockMovieRepository)
     }
 
     @Test
     fun `When request successful, it returns success`() = runTest {
-        val expected = MockUtil.movies
-        every { mockMovieRepository.getMovies() } returns flowOf(expected)
+        val expected = MockUtil.movieDetail
+        every { mockMovieRepository.getMovieDetail(any()) } returns flowOf(expected)
 
-        getMoviesUseCase().collect {
+        getMovieDetailUseCase(1).collect {
             it shouldBe expected
         }
     }
@@ -36,9 +36,9 @@ class UseCaseTest {
     @Test
     fun `When request failed, it returns error`() = runTest {
         val expected = Exception()
-        every { mockMovieRepository.getMovies() } returns flow { throw expected }
+        every { mockMovieRepository.getMovieDetail(any()) } returns flow { throw expected }
 
-        getMoviesUseCase().catch {
+        getMovieDetailUseCase(1).catch {
             it shouldBe expected
         }.collect()
     }

@@ -25,12 +25,6 @@ class NetworkingService : LifecycleService() {
     @Inject
     lateinit var getMovieDetailUseCase: GetMovieDetailUseCase
 
-    override fun onBind(intent: Intent): IBinder {
-        super.onBind(intent)
-        mMessenger = Messenger(IncomingHandler(this))
-        return mMessenger.binder
-    }
-
     /**
      * Target we publish for clients to send messages to IncomingHandler.
      */
@@ -39,6 +33,13 @@ class NetworkingService : LifecycleService() {
     /**
      * Handler of incoming messages from clients.
      */
+
+    override fun onBind(intent: Intent): IBinder {
+        super.onBind(intent)
+        mMessenger = Messenger(IncomingHandler(this))
+        return mMessenger.binder
+    }
+
     internal class IncomingHandler(
         private val service: NetworkingService
     ) : Handler(Looper.getMainLooper()) {

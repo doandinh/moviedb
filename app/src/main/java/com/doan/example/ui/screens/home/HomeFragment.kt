@@ -37,7 +37,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         }
 //        viewModel.getMovies()
         isLoading(true)
-//        (activity as? MainActivity)?.getMovies()
     }
 
     private fun subScribeEventBus() {

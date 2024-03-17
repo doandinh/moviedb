@@ -1,7 +1,6 @@
 package com.doan.example.data.test
 
-import com.doan.example.data.remote.models.responses.ErrorResponse
-import com.doan.example.data.remote.models.responses.MoviesResponse
+import com.doan.example.data.remote.models.responses.*
 import io.mockk.every
 import io.mockk.mockk
 import okhttp3.ResponseBody
@@ -22,8 +21,8 @@ object MockUtil {
             every { httpException.message() } returns response.message()
             every { httpException.response() } returns response
             every { responseBody.string() } returns "{\n" +
-                    "  \"message\": \"message\"\n" +
-                    "}"
+                "  \"message\": \"message\"\n" +
+                "}"
             return httpException
         }
 
@@ -33,5 +32,9 @@ object MockUtil {
 
     val movieResponse = MoviesResponse(
         page = 1
+    )
+
+    val movieDetailResponse = MovieDetailResponse(
+        id = 123
     )
 }
