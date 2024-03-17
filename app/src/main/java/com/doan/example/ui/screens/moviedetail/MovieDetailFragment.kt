@@ -35,11 +35,6 @@ class MovieDetailFragment : BaseFragment<FragmentMovieDetailBinding>() {
 
     override fun setupView() {
         subScribeEventBus()
-        // Hide navigation button on toolbar
-        (requireActivity() as AppCompatActivity).supportActionBar?.apply {
-            setDisplayHomeAsUpEnabled(false)
-            setHomeButtonEnabled(false)
-        }
         isLoading(true)
         (activity as? MainActivity)?.getMovieDetail(args.movieId)
     }

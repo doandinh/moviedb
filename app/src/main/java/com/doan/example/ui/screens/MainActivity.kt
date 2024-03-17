@@ -7,7 +7,7 @@ import androidx.activity.viewModels
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.*
 import com.doan.example.R
 import com.doan.example.databinding.ActivityMainBinding
 import com.doan.example.enums.MessageActions
@@ -64,6 +64,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             supportFragmentManager.findFragmentById(R.id.fcvMainNavHostFragment) as NavHostFragment
         val navController = navHostFragment.navController
         NavigationUI.setupActionBarWithNavController(this, navController)
+        val appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.main_nav_graph
+            )
+        )
+        binding.tMainAppBar.setupWithNavController(navController, appBarConfiguration)
 
         // Bind to NetworkingService.
         Intent(this, NetworkingService::class.java).also { intent ->
