@@ -61,7 +61,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         viewModel.movieUiModels bindTo ::displayMoviesUi
         viewModel.error bindTo ::displayError
         viewModel.navigator bindTo navigator::navigate
-        viewModel.isLoading bindTo ::isLoading
+//        viewModel.isLoading bindTo ::isLoading
     }
 
 

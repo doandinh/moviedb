@@ -50,7 +50,7 @@ class MovieDetailFragment : BaseFragment<FragmentMovieDetailBinding>() {
     }
 
     override fun bindViewModel() {
-        viewModel.isLoading bindTo ::isLoading
+//        viewModel.isLoading bindTo ::isLoading
         viewModel.movieDetailUiModel bindTo ::displayMovieDetail
     }
 
@@ -88,7 +88,7 @@ class MovieDetailFragment : BaseFragment<FragmentMovieDetailBinding>() {
                 }
                 val strPopularity = getString(R.string.movie_detail_popularity)
                 val fullStrPopularity =
-                    strPopularity + " " + String.format("%.2f", movieDetail.popularity)
+                    strPopularity + " " + movieDetail.popularity
                 val spPopularity = SpannableString(fullStrPopularity)
                 spPopularity.setSpan(
                     ForegroundColorSpan(Color.GREEN),

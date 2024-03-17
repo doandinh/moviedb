@@ -14,7 +14,7 @@ data class MovieDetailUiModel(
     val title: String,
     val originalTitle: String,
     val overview: String,
-    val popularity: Double,
+    val popularity: String,
     val status: String,
 ) : Parcelable
 
@@ -24,6 +24,6 @@ fun MovieDetail.toUiModel() = MovieDetailUiModel(
     posterPath = "${BuildConfig.IMAGE_URL}$IMAGE_SIZE$posterPath",
     originalTitle = originalTitle,
     overview = overview,
-    popularity = popularity,
+    popularity = String.format("%.2f", popularity),
     status = status
 )
