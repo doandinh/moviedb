@@ -16,11 +16,11 @@ class MainNavigatorImpl @Inject constructor(
 
     override fun navigate(event: NavigationEvent) {
         when (event) {
-            is NavigationEvent.Second -> navigateToSecond(event.movieId)
+            is NavigationEvent.MovieDetail -> navigateToMovieDetail(event.movieId)
         }
     }
 
-    private fun navigateToSecond(movieId: Long) {
+    private fun navigateToMovieDetail(movieId: Long) {
         val navController = findNavController()
         when (navController?.currentDestination?.id) {
             R.id.homeFragment -> navController.navigate(actionHomeFragmentToMovieDetailFragment(movieId))

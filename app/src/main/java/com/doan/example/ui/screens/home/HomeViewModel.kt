@@ -24,8 +24,8 @@ class HomeViewModel @Inject constructor(
     private val _movieUiModels = MutableStateFlow<List<MovieUiModel>>(emptyList())
     val movieUiModels = _movieUiModels.asStateFlow()
 
-    fun navigateToSecond(movieId: Long) {
-        launch { _navigator.emit(NavigationEvent.Second(movieId)) }
+    fun navigateToDetail(movieId: Long) {
+        launch { _navigator.emit(NavigationEvent.MovieDetail(movieId)) }
     }
 
     fun getMovies() {
